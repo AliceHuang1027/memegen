@@ -53,24 +53,44 @@ app.get(`/memegen/api/:text`,(req,res)=>{
         if(obj.black){
             Jimp.loadFont(Jimp.FONT_SANS_43_BLACK).then(font =>{
                 image.print(font,10,10,obj.text)
+                if(obj.blur)
+                {image.blur(obj.blur)}
+                if(obj.greyscale){
+                    image.greyscale(obj.greyscale)
+                }
+                if(obj.sepia){
+                    image.sepia(obj.sepia)
+                }
+                
+                image.getBufferAsync(Jimp.MIME_JPEG).then(buffer =>{
+                    res.set('Content-Type', 'image/jpeg')
+                    console.log(buffer)
+                    res.send(buffer)
+                })
                  
     
             })
         }
-        if(obj.black===undefinded){
+        if(obj.black !==true){
             Jimp.loadFont(Jimp.FONT_SANS_43_WHITE).then(font =>{
                 image.print(font,10,10,obj.text)
+                if(obj.blur)
+                {image.blur(obj.blur)}
+                if(obj.greyscale){
+                    image.greyscale(obj.greyscale)
+                }
+                if(obj.sepia){
+                    image.sepia(obj.sepia)
+                }
+                
+                image.getBufferAsync(Jimp.MIME_JPEG).then(buffer =>{
+                    res.set('Content-Type', 'image/jpeg')
+                    console.log(buffer)
+                    res.send(buffer)
+                })
             })
         }
-        
-        image.blur(obj.blur)
-        image.greyscale(obj.greyscale)
-        image.sepia(obj.sepia)
-        image.getBufferAsync(Jimp.MIME_JEPG).then(buffer =>{
-            res.set('Content-Type', 'image/jpeg')
-            console.log(buffer)
-            res.send(buffer)
-        })
+       
     })
    
     
