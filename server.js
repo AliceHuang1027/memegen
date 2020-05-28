@@ -51,15 +51,15 @@ app.get(`/memegen/api/:text`,(req,res)=>{
 
         console.log(image)
         if(obj.black){
-            Jimp.loadFont(Jimp.FONT_SANS_43_BLACK).then(font =>{
+            Jimp.loadFont(Jimp.FONT_SANS_32_BLACK).then(font =>{
                 image.print(font,10,10,obj.text)
                 if(obj.blur)
-                {image.blur(obj.blur)}
+                {image.blur(+obj.blur)}
                 if(obj.greyscale){
-                    image.greyscale(obj.greyscale)
+                    image.greyscale(+obj.greyscale)
                 }
                 if(obj.sepia){
-                    image.sepia(obj.sepia)
+                    image.sepia(+obj.sepia)
                 }
                 
                 image.getBufferAsync(Jimp.MIME_JPEG).then(buffer =>{
@@ -72,15 +72,15 @@ app.get(`/memegen/api/:text`,(req,res)=>{
             })
         }
         if(obj.black !==true){
-            Jimp.loadFont(Jimp.FONT_SANS_43_WHITE).then(font =>{
+            Jimp.loadFont(Jimp.FONT_SANS_32_WHITE).then(font =>{
                 image.print(font,10,10,obj.text)
                 if(obj.blur)
-                {image.blur(obj.blur)}
+                {image.blur(+obj.blur)}
                 if(obj.greyscale){
-                    image.greyscale(obj.greyscale)
+                    image.greyscale(+obj.greyscale)
                 }
                 if(obj.sepia){
-                    image.sepia(obj.sepia)
+                    image.sepia(+obj.sepia)
                 }
                 
                 image.getBufferAsync(Jimp.MIME_JPEG).then(buffer =>{
