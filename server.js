@@ -50,7 +50,7 @@ app.get(`/memegen/api/:text`,(req,res)=>{
     Jimp.read(obj.src).then(image =>{
 
         console.log(image)
-        if(obj.black){
+        if(obj.black===true){
             Jimp.loadFont(Jimp.FONT_SANS_32_BLACK).then(font =>{
                 image.print(font,10,10,obj.text)
                 if(obj.blur)
