@@ -16,7 +16,8 @@ app.options('/*',(req,res)=>{
     )
     res.send('ok')
 })
-
+const memory = {}
+const list = ["animals","arch","nature","people","tech"]
 app.get(`/memegen/api/:text`,(req,res)=>{
     if(!req){
         res.send('check your url')
@@ -31,21 +32,23 @@ app.get(`/memegen/api/:text`,(req,res)=>{
 
     obj.sepia = req.query.sepia
     obj.greyscale = req.query.greyscale
-    obj.category = req.query.category
+    if(req.query.category && list.find(e=>{return e===req.query.category})){
+
+        obj.category = req.query.category
+    }
+    
     
     if(req.query.src){
         obj.src= req.query.src
     }
+    if(!obj.category && !req.query.src){
+        obj.src= `https://placeimg.com/640/480/any`
+   }
     if(!req.query.src && obj.category){
         obj.src = `https://placeimg.com/640/480/${obj.category}`
     }
-   if(!obj.category && !req.query.src){
-        obj.src= `https://placeimg.com/640/480/any`
-   }
-    
+ 
 
-   
-   
 
     Jimp.read(obj.src).then(image =>{
 
@@ -65,6 +68,23 @@ app.get(`/memegen/api/:text`,(req,res)=>{
                 image.getBufferAsync(Jimp.MIME_JPEG).then(buffer =>{
                     res.set('Content-Type', 'image/jpeg')
                     console.log(buffer)
+                    const name = JSON.stringify(obj)
+                    console.log(name)
+                    if(Object.keys(memory).length<10){
+
+                        if(memory[name]){
+                            if(memory[name].buffer){
+                                memory[name].count +=1
+                                return res.send(memory[name].buffer)
+                            }
+                            memory[name].count +=1
+                        }
+                        if(!memory[name]){
+                            memory[name]={"buffer":buffer,"count":1}
+                        }
+                       
+                    }
+                    console.log('memory',memory)
                     res.send(buffer)
                 })
                  
@@ -86,15 +106,29 @@ app.get(`/memegen/api/:text`,(req,res)=>{
                 image.getBufferAsync(Jimp.MIME_JPEG).then(buffer =>{
                     res.set('Content-Type', 'image/jpeg')
                     console.log(buffer)
+                    const name = JSON.stringify(obj)
+                    console.log(name)
+                    if(Object.keys(memory).length<10){
+
+                        if(memory[name]){
+                            if(memory[name].buffer){
+                                memory[name].count +=1
+                                return res.send(memory[name].buffer)
+                            }
+                            memory[name].count +=1
+                        }
+                        if(!memory[name]){
+                            memory[name]={"buffer":buffer,"count":1}
+                        }
+                       
+                    }
+                    console.log('memory',memory)
                     res.send(buffer)
                 })
             })
         }
        
     })
-   
-    
-    
 
 })
 
